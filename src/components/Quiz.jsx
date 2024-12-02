@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import './Quiz.css'
+import { useState } from 'react';
 
 const perguntas = [
   {
@@ -25,18 +24,19 @@ function Quiz() {
   const [resultado, setResultado] = useState(null);
 
   const responder = (respostaSelecionada) => {
-    setRespostas([...respostas, respostaSelecionada]);
+    const novaRespostas = ([...respostas, respostaSelecionada]);
+    setRespostas(novaRespostas)
     if (indicePergunta + 1 < perguntas.length) {
-      setIndicePergunta(indicePergunta + 1);
+      setIndicePergunta(indicePergunta + 1)
     } else {
-      calcularResultado();
+      calcularResultado(novaRespostas);
     }
-  };
+  }
 
-  const calcularResultado = () => {
+  const calcularResultado = (todasRespostas) => {
     let pontuacao = 0;
     for (let i = 0; i < perguntas.length; i++) {
-      if (respostas[i] === perguntas[i].resposta) {
+      if (todasRespostas[i] === perguntas[i].resposta) {
         pontuacao++;
       }
     }
@@ -50,11 +50,11 @@ function Quiz() {
   };
 
   return (
-    <div class="body">
+    <>
       {resultado !== null ? (
         <div>
           <h2>Resultado do Quiz</h2>
-          <p>Você acertou {resultado} de {perguntas.length} perguntas!</p>
+          <p>Voce acertou {resultado} de {perguntas.length} perguntas!</p>
           <button onClick={reiniciarQuiz}>Reiniciar Quiz</button>
         </div>
       ) : (
@@ -63,15 +63,16 @@ function Quiz() {
           <p>{perguntas[indicePergunta].pergunta}</p>
           <ul>
             {perguntas[indicePergunta].opcoes.map((opcao, index) => (
-              <li key={index} onClick={() => responder(opcao)}>
-                {opcao}
+              <li key={index} onClick={() => responder(opcao)}>{opcao}
               </li>
             ))}
           </ul>
         </div>
       )}
-    </div>
-  );
+    </>
+  )
+
+
 }
 
 export default Quiz;
